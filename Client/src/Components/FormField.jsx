@@ -21,6 +21,7 @@ const FormField = ({ labelName, type, name, placeholder, value, handleChange, is
         <input
           type={type}
           id={name}
+          name={name}
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
