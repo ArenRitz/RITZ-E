@@ -22,45 +22,39 @@ const Home = () => {
     const [searchTimeout, setSearchTimeout] = useState(null);
     const fetchPosts = async () => {
         setLoading(true);
-    
         try {
-          const response = await fetch('http://localhost:8080/api/v1/post', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-    
-          if (response.ok) {
-            const result = await response.json();
-            setAllPosts(result.data.reverse());
-          }
+            const response = await fetch('http://localhost:8080/api/v1/post', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                const result = await response.json();
+                setAllPosts(result.data.reverse());
+            }
         } catch (err) {
-          alert(err);
+            alert(err);
         } finally {
-          setLoading(false);
+            setLoading(false);
         }
-      };
-    
-      useEffect(() => {
+    };
+    useEffect(() => {
         fetchPosts();
-      }, []);
-    
-      const handleSearchChange = async (e) => {
-        
+    }, []);
+
+    const handleSearchChange = async (e) => {
         clearTimeout(searchTimeout);
         setLoading(true)
         setSearchText(e.target.value);
-        
         setSearchTimeout(
-        setTimeout(() => {
-            setLoading(false)
-            const searchResult = allPosts.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()) || item.prompt.toLowerCase().includes(searchText.toLowerCase()));
-            setSearchedResults(searchResult);
-        }, 500)
-        
-    );
-    
+            //timeout to wait for string to be fully typed before displaying search results
+            setTimeout(() => {
+                setLoading(false)
+                const searchResult = allPosts.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()) || item.prompt.toLowerCase().includes(searchText.toLowerCase()));
+                setSearchedResults(searchResult);
+            }, 500)
+        );
     }
 
 
@@ -72,14 +66,14 @@ const Home = () => {
                 <p className='mt-2 text-[#666e75] text-[16px] max-w[500px]'> Browse through a collection of imaginative and visually stunning images genearated by DALL-E AI </p>
             </div>
             <div className="mt-16">
-                <FormField 
+                <FormField
                     labelName='Search posts'
                     type="text"
                     name="text"
                     placeholder="Search posts"
                     value={searchText}
                     handleChange={handleSearchChange}
-                
+
                 />
             </div>
             <div className='mt-10'>
